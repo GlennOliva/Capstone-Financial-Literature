@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 require('dotenv').config();
 const db = require('./config/db.js');
 const expenseRoutes = require('./routes/ExpenseRoutes');
@@ -10,9 +11,14 @@ const CategoryRoutes = require('./routes/CategoryRoutes.js');
 const BudgetCalculatorRoutes = require('./routes/BudgetCalculatorRoutes.js');
 const GoalRoutes = require("./routes/GoalRoutes.js")
 
+
+
+app.use(cors()); // ✅ Allow all origins (for development)
+
+
 app.use(express.json());
 app.use('/api/expenses', expenseRoutes);
-app.use('/api/budgets', budgetRoutes);
+app.use('/api/budget', budgetRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/budget_type', budgetTypeRoutes);
 app.use('/api/category', CategoryRoutes);

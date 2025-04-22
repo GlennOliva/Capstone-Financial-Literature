@@ -1,71 +1,75 @@
 import React, { useState } from "react";
-import {  Link } from "react-router-dom";
-// import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import logo from "../../assets/images/financial_logo.png";
 import "../../css/login.css";
-import { Snackbar, Alert } from "@mui/material"; // Import Snackbar
+import { Snackbar, Alert } from "@mui/material";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity: "success" | "error" | "warning" | "info" }>({
+  const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
-    severity: "info",
+    severity: "info" as "success" | "error" | "warning" | "info",
   });
-  
-  // // // const apiUrl = import.meta.env.VITE_API_URL;
-  //  const navigate = useNavigate();
 
-  // const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault(); // Prevent form reload
+  const apiUrl = import.meta.env.VITE_API_URL;
+  //console.log("VITE_API_URL =", import.meta.env.VITE_API_URL);
 
-  //   if (!email || !password) {
-  //     setSnackbar({ open: true, message: "Email and password are required.", severity: "error" });
-  //     return;
-  //   }
+  const navigate = useNavigate();
 
-  //   try {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
+    if (!email || !password) {
+      setSnackbar({ open: true, message: "Email and password are required.", severity: "error" });
+      return;
+    }
+
+    try {
+      const response = await axios.post(`${apiUrl}/api/user/login`, { email, password });
+
+      if (response.status === 200) {
+        const user = response.data.user;
+        console.log("Login Successful:", user);
       
-
-  //           const response = await axios.post(apiUrl, { email, password });
-
-  //     if (response.status === 200) {
-  //       console.log(`${role} Login Successful:`, response.data);
-
-  //         localStorage.setItem("user_id", response.data.student.id);
-  //         setSnackbar({ open: true, message: "Student Login Successful!", severity: "success" });
-  //         setTimeout(() => navigate("/user/dashboard"), 1500);
-  //       }
-  //     }
-  //   } catch (error: unknown) {
-  //     if (axios.isAxiosError(error) && error.response) {
-  //       setSnackbar({ open: true, message: error.response.data?.error || "Login failed", severity: "error" });
-  //     } else {
-  //       setSnackbar({ open: true, message: "An unexpected error occurred.", severity: "error" });
-  //     }
-  //   }
-  // };
+        localStorage.setItem("user_id", user.id); // or user.user_id if needed
+      
+        // ✅ Display user_id on console
+        console.log("User ID:", user.id);
+      
+        setSnackbar({ open: true, message: "Login Successful!", severity: "success" });
+      
+        setTimeout(() => navigate("/user/dashboard"), 1500);
+      }
+      
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response) {
+        setSnackbar({
+          open: true,
+          message: error.response.data?.message || "Login failed",
+          severity: "error",
+        });
+      } else {
+        setSnackbar({ open: true, message: "An unexpected error occurred.", severity: "error" });
+      }
+    }
+  };
 
   return (
     <div className="login-container">
       <div className="login-left">
         <img src={logo} alt="Logo" className="login-logo" />
-        <h1 className="login-title">
-          FINANCIAL LITERATURE APP
-        </h1>
+        <h1 className="login-title">FINANCIAL LITERATURE APP</h1>
       </div>
 
       <div className="login-right">
         <div className="login-box">
           <h2 className="login-header">LOGIN PAGE</h2>
 
-        {/*onSubmit={handleLogin}/}
-          {/* Login Form */}
-          <form >
-
+          <form onSubmit={handleLogin}>
             <div className="input-group">
               <i className="bx bx-envelope email-icon"></i>
               <input
@@ -94,35 +98,31 @@ const Login = () => {
               ></i>
             </div>
 
-            {/* Login Button */}
             <button className="login-button" type="submit">
               LOGIN
             </button>
 
-            <h1 style={{ paddingTop: '10px' , fontSize: '14px' }}>
-  Don't have an account? <Link to="/register">Sign Up here!</Link>
-</h1>
-    
+            <h1 style={{ paddingTop: '10px', fontSize: '14px' }}>
+              Don't have an account? <Link to="/register">Sign Up here!</Link>
+            </h1>
           </form>
         </div>
       </div>
 
       <Snackbar
-  open={snackbar.open}
-  autoHideDuration={3000}
-  onClose={() => setSnackbar({ ...snackbar, open: false })}
-  anchorOrigin={{ vertical: "top", horizontal: "right" }} // Correct positioning
->
-  <Alert
-    onClose={() => setSnackbar({ ...snackbar, open: false })}
-    severity={snackbar.severity} // Dynamically set severity
-    sx={{ width: "100%" }}
-  >
-    {snackbar.message}
-  </Alert>
-</Snackbar>
-
-
+        open={snackbar.open}
+        autoHideDuration={3000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

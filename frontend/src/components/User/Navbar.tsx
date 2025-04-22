@@ -2,32 +2,41 @@ import React, { useState, useEffect, useRef } from "react";
 import "../../css/style.css";
 
 import { useNavigate } from "react-router-dom";
+import UpdateUserProfile from "./UpdateUserProfile";
 
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-//   const [userProfile, setAdminProfile] = useState<{ image: string; full_name: string, email: string, password: string } | null>(null);
-//   const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
+  const [userProfile, setUserProfile] = useState<{ image: string; full_name: string, email: string, password: string, address:string } | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
   const profileRef = useRef<HTMLDivElement | null>(null);
   const dropdownRef = useRef<HTMLUListElement | null>(null);
-//   const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = import.meta.env.VITE_API_URL;
 
-//   // Fetch admin profile on load
-//   useEffect(() => {
-//     const adminId = localStorage.getItem('admin_id'); // Retrieve the admin ID from local storage
+  // Fetch admin profile on load
+  useEffect(() => {
+    const userId = localStorage.getItem('user_id'); // Retrieve the admin ID from local storage
 
-//     if (adminId) {
-//         fetch(`${apiUrl}admin/${adminId}`)
-//             .then(res => res.json())
-//             .then(data => {
-//               setAdminProfile(data[0] || null); // Assuming the response is an array
-//             })
-//             .catch(err => console.log(err));
-//     } else {
-//         console.log("Admin ID not found in local storage");
-//     }
-//   }, [apiUrl]);
+    if (userId) {
+      fetch(`${apiUrl}/api/user/${userId}`)
+      .then(async (res) => {
+        if (!res.ok) {
+          const text = await res.text(); // This might be HTML
+          throw new Error(`Error ${res.status}: ${text}`);
+        }
+        return res.json();
+      })
+      .then(data => {
+        setUserProfile(data || null);
+      })
+      .catch(err => {
+        console.error("Failed to fetch user profile:", err.message);
+      });
+    } else {
+        console.log("User ID not found in local storage");
+    }
+  }, [apiUrl]);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -78,19 +87,24 @@ const Navbar: React.FC = () => {
       </a>
       <span className="divider"></span> */}
 
-      <div className="profile" ref={profileRef} onClick={toggleDropdown}>
-        <img src="" alt="Profile" />
-        <ul className={`profile-link ${isDropdownOpen ? "show" : ""}`} ref={dropdownRef}>
+<div className="profile" ref={profileRef} onClick={toggleDropdown}>
+{userProfile && (
+  <img src={`${apiUrl}/uploads/${userProfile.image}`} alt="Profile" />
+)}
+
+  <ul className={`profile-link ${isDropdownOpen ? "show" : ""}`} ref={dropdownRef}>
+    <li>
+      <p style={{ fontSize: "12px", margin: "4px", paddingLeft: "10px" }}>
+        Hi, {userProfile?.full_name}
+      </p>
+    </li>
           <li>
-            <p style={{ fontSize: "12px", margin: "4px", paddingLeft: "10px" }}>
-              {/* Hi, {userProfile?.full_name} */}
-            </p>
+          {/* onClick={() => setIsModalOpen(true)} */}
+          <a href="#" onClick={() => setIsModalOpen(true)}>
+  <i className="bx bxs-cog"></i> Update Profile
+</a>
+
           </li>
-          {/* <li>
-            <a href="#" onClick={() => setIsModalOpen(true)}>
-              <i className="bx bxs-cog"></i> Update Profile
-            </a>
-          </li> */}
           <li>
             <a href="#" onClick={handleLogout}>
               <i className="bx bxs-log-out-circle"></i> Logout
@@ -99,15 +113,17 @@ const Navbar: React.FC = () => {
         </ul>
       </div>
 
-      {/* {isModalOpen && userProfile && (
-        <UpdateAdminProfile
+       {isModalOpen && userProfile && (
+        <UpdateUserProfile
           initialFullName={userProfile.full_name}
+          image={userProfile.image}
           initialEmail={userProfile.email}
+          address={userProfile.address}
           initialPassword={userProfile.password}
-          adminId={localStorage.getItem('admin_id') || ""}
+          userId={localStorage.getItem('user_id') || ""}
           onClose={() => setIsModalOpen(false)}
         />
-      )} */}
+      )} 
     </nav>
   );
 };

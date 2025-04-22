@@ -1,77 +1,91 @@
 import { useState } from "react";
-import {  Link } from "react-router-dom";
-// import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/financial_logo.png";
 import "../../css/login.css";
-import { Snackbar, Alert } from "@mui/material"; // Import Snackbar
+import { Snackbar, Alert } from "@mui/material";
+import axios from "axios";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
-  const [full_name, setFullName] = useState(" ");
-  const [image, setImage] = useState("");
+  const [address, setAddress] = useState(""); // Correctly defined state for address
+  const [full_name, setFullName] = useState("");
+  const [image, setImage] = useState<File | null>(null); // Typed as File or null
   const [password, setPassword] = useState("");
-  const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity: "success" | "error" | "warning" | "info" }>({
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: "success" | "error" | "warning" | "info";
+  }>({
     open: false,
     message: "",
     severity: "info",
   });
-  
-  // // // const apiUrl = import.meta.env.VITE_API_URL;
-  //  const navigate = useNavigate();
 
-  // const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault(); // Prevent form reload
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate();
 
-  //   if (!email || !password) {
-  //     setSnackbar({ open: true, message: "Email and password are required.", severity: "error" });
-  //     return;
-  //   }
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  //   try {
+    if (!email || !password || !full_name || !image || !address) {
+      return setSnackbar({
+        open: true,
+        message: "All fields are required",
+        severity: "error",
+      });
+    }
 
-      
+    const formData = new FormData();
+    formData.append("full_name", full_name);
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("image", image); // Send file object
+    formData.append("address", address); // Corrected to pass address
 
-  //           const response = await axios.post(apiUrl, { email, password });
+    try {
+             await axios.post(`${apiUrl}/api/user/register`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
-  //     if (response.status === 200) {
-  //       console.log(`${role} Login Successful:`, response.data);
+      setSnackbar({
+        open: true,
+        message: "Registration successful!",
+        severity: "success",
+      });
 
-  //         localStorage.setItem("user_id", response.data.student.id);
-  //         setSnackbar({ open: true, message: "Student Login Successful!", severity: "success" });
-  //         setTimeout(() => navigate("/user/dashboard"), 1500);
-  //       }
-  //     }
-  //   } catch (error: unknown) {
-  //     if (axios.isAxiosError(error) && error.response) {
-  //       setSnackbar({ open: true, message: error.response.data?.error || "Login failed", severity: "error" });
-  //     } else {
-  //       setSnackbar({ open: true, message: "An unexpected error occurred.", severity: "error" });
-  //     }
-  //   }
-  // };
+      setTimeout(() => navigate("/login"), 2000);
+    } catch (err) {
+      setSnackbar({
+        open: true,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        message: (err as any)?.response?.data?.error || "Something went wrong",
+        severity: "error",
+      });
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
+    setImage(file);
+  };
 
   return (
     <div className="login-container">
       <div className="login-left">
         <img src={logo} alt="Logo" className="login-logo" />
-        <h1 className="login-title">
-          FINANCIAL LITERATURE APP
-        </h1>
+        <h1 className="login-title">FINANCIAL LITERATURE APP</h1>
       </div>
 
       <div className="login-right">
         <div className="login-box">
           <h2 className="login-header">REGISTER PAGE</h2>
 
-        {/*onSubmit={handleLogin}/}
-          {/* Login Form */}
-          <form >
-
-          <div className="input-group">
+          <form onSubmit={handleRegister}>
+            <div className="input-group">
               <i className="bx bx-user email-icon"></i>
               <input
-                type="name"
+                type="text"
                 placeholder="Full Name"
                 className="input-field"
                 value={full_name}
@@ -92,8 +106,6 @@ const Register = () => {
               />
             </div>
 
-
-
             <div className="input-group">
               <i className="bx bx-lock password-icon"></i>
               <input
@@ -110,48 +122,53 @@ const Register = () => {
               ></i>
             </div>
 
-
             <div className="input-group">
               <i className="bx bx-file email-icon"></i>
               <input
                 type="file"
-                placeholder="Image"
                 className="input-field"
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
+                onChange={handleFileChange} // Corrected this to handle file changes
                 required
               />
             </div>
 
-            {/* Login Button */}
+            <div className="input-group">
+              <i className="bx bx-location-plus email-icon"></i>
+              <input
+                type="text"
+                placeholder="Address"
+                className="input-field"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)} // Corrected this to update the address state
+                required
+              />
+            </div>
+
             <button className="login-button" type="submit">
               REGISTER
             </button>
 
-            <h1 style={{ paddingTop: '10px' , fontSize: '14px' }}>
-  Have an Account? <Link to="/login">Login Here!</Link>
-</h1>
-    
+            <h1 style={{ paddingTop: "10px", fontSize: "14px" }}>
+              Have an Account? <Link to="/login">Login Here!</Link>
+            </h1>
           </form>
         </div>
       </div>
 
       <Snackbar
-  open={snackbar.open}
-  autoHideDuration={3000}
-  onClose={() => setSnackbar({ ...snackbar, open: false })}
-  anchorOrigin={{ vertical: "top", horizontal: "right" }} // Correct positioning
->
-  <Alert
-    onClose={() => setSnackbar({ ...snackbar, open: false })}
-    severity={snackbar.severity} // Dynamically set severity
-    sx={{ width: "100%" }}
-  >
-    {snackbar.message}
-  </Alert>
-</Snackbar>
-
-
+        open={snackbar.open}
+        autoHideDuration={3000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

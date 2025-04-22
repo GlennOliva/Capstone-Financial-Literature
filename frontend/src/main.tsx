@@ -4,6 +4,7 @@ import App from './App.tsx'
 import 'boxicons/css/boxicons.min.css';
 import './css/app.css'
 
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />

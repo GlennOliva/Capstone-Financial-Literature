@@ -71,6 +71,25 @@ const Sidebar: React.FC = () => {
 
 <li>
   <Link 
+    to="/user/manage_category" 
+    className={location.pathname === "/user/manage_category" ? "active" : ""}
+  >
+    <i className="bx bx-category icon"></i> MANAGE CATEGORY
+  </Link>
+</li>
+
+
+<li>
+  <Link 
+    to="/user/manage_budget_type" 
+    className={location.pathname === "/user/manage_budget_type" ? "active" : ""}
+  >
+    <i className="bx bx-wallet icon"></i> MANAGE BUDGET TYPE
+  </Link>
+</li>
+
+<li>
+  <Link 
     to="/user/manage_goal" 
     className={location.pathname === "/user/manage_goal" ? "active" : ""}
   >

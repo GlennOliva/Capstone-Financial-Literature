@@ -1,9 +1,11 @@
-import React from 'react'
+import React from 'react';
 
-const Footer = () => {
+const Footer: React.FC = () => {
   return (
-    <div>Footer</div>
-  )
-}
+    <footer className="efinance-footer">
+      <p>&copy; {new Date().getFullYear()} FinanceWise. All rights reserved.</p>
+    </footer>
+  );
+};
 
-export default Footer
+export default Footer;

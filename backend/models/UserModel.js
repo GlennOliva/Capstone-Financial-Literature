@@ -6,6 +6,11 @@ exports.getUser = (userId, callback) => {
   db.query(sql, [userId], callback);
 };
 
+
+exports.getUserbyId = (userId, callback) => {
+  const sql = 'SELECT * FROM tbl_user WHERE id = ?';
+  db.query(sql, [userId], callback);
+};
 // 🔹 Add a new expense
 exports.addUser = (data, callback) => {
   const sql = `
@@ -34,7 +39,8 @@ exports.updateUser = (id, data, callback) => {
     data.email,
     data.password,
     data.image,
-    data.address
+    data.address,
+    id
   ];
   db.query(sql, values, callback);
 };

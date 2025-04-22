@@ -8,6 +8,24 @@ exports.getUser = (req, res) => {
   });
 };
 
+// 🔍 Get a specific user by ID
+exports.getUserById = (req, res) => {
+  const userId = req.params.id;
+
+  User.getUserbyId(userId, (err, result) => {
+    if (err) {
+      console.error('Database error:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+
+    if (result.length === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json(result[0]);
+  });
+}; 
+
 
 exports.addUser = (req, res) => {
     try {
