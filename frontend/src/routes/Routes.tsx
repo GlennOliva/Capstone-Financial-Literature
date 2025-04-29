@@ -9,6 +9,8 @@ import ManageBudgetType from '../pages/User/ManageBudgetType';
 import ManageGoal from '../pages/User/ManageGoal';
 import ManageBudget from '../pages/User/ManageBudget';
 import ManageProgress from '../pages/User/ManageProgress';
+import ManageBudgetCalculator from '../pages/User/ManageCalculator';
+import ManageFinanceAssitance from '../pages/User/ManageFinanceAssitance';
 
 
 
@@ -26,6 +28,8 @@ const AppRoutes = () => (
     <Route path='/user/manage_goal' element={<ManageGoal/>} /> 
     <Route path='/user/manage_budget' element={<ManageBudget/>} /> 
     <Route path='/user/manage_progress' element={<ManageProgress/>} /> 
+    <Route path='/user/manage_budget_calculator' element={<ManageBudgetCalculator/>} /> 
+    <Route path='/user/manage_finance_assistance' element={<ManageFinanceAssitance/>} /> 
     </Routes>
   </Router>
 );

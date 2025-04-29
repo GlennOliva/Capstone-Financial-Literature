@@ -187,7 +187,7 @@ const ManageProgress = () => {
     })
   ) : (
     <tr>
-      <td colSpan={8}>No goal found.</td> {/* updated colSpan from 7 to 8 */}
+      <td colSpan={8}>No progress found.</td> {/* updated colSpan from 7 to 8 */}
     </tr>
   )}
 </tbody>

@@ -126,8 +126,8 @@ const Sidebar: React.FC = () => {
 
 <li>
   <Link 
-    to="/user/manage_budget_calculator" 
-    className={location.pathname === "/user/manage_budget_calculator" ? "active" : ""}
+    to="/user/manage_finance_assistance" 
+    className={location.pathname === "/user/manage_finance_assistance" ? "active" : ""}
   >
     <i className="bx bx-bot icon"></i> FINANCE ASSISTANCE
   </Link>
