@@ -183,29 +183,73 @@ const ManageBudgetCalculator = () => {
               </tbody>
             </table>
 
-            <div className="efinance-table-footer">
-              <span>Showing {currentBudgetCalculator.length} entries</span>
-              <div className="efinance-pagination">
-                <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
-                  Previous
-                </button>
-                {[...Array(Math.ceil(filteredBudgetCalculator.length / itemsPerPage))].map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => paginate(index + 1)}
-                    className={currentPage === index + 1 ? 'active' : ''}
-                  >
-                    {index + 1}
-                  </button>
-                ))}
-                <button
-                  onClick={() => paginate(currentPage + 1)}
-                  disabled={currentPage === Math.ceil(filteredBudgetCalculator.length / itemsPerPage)}
-                >
-                  Next
-                </button>
-              </div>
-            </div>
+                       <div
+  className="efinance-table-footer"
+  style={{
+    width: '100%',
+    display: 'flex',
+    alignItems: 'right',
+    justifyContent: 'space-between',
+    padding: '10px',
+    marginTop: '20px',
+    gap: '10px'
+  }}
+>
+  <span>Showing {currentBudgetCalculator.length} entries</span>
+  <div
+    className="efinance-pagination"
+    style={{
+      display: 'flex',
+      gap: '6px'
+    }}
+  >
+    <button
+      onClick={() => paginate(currentPage - 1)}
+      disabled={currentPage === 1}
+      style={{
+        margin: '0 4px',
+        padding: '6px 10px',
+        border: 'none',
+        borderRadius: '4px',
+        backgroundColor: '#f3f4f6',
+        cursor: 'pointer'
+      }}
+    >
+      Previous
+    </button>
+    {[...Array(Math.ceil(filteredBudgetCalculator.length / itemsPerPage))].map((_, index) => (
+      <button
+        key={index}
+        onClick={() => paginate(index + 1)}
+        style={{
+          margin: '0 4px',
+          padding: '6px 10px',
+          border: 'none',
+          borderRadius: '4px',
+          backgroundColor: currentPage === index + 1 ? '#3b82f6' : '#f3f4f6',
+          color: currentPage === index + 1 ? 'white' : 'black',
+          cursor: 'pointer'
+        }}
+      >
+        {index + 1}
+      </button>
+    ))}
+    <button
+      onClick={() => paginate(currentPage + 1)}
+      disabled={currentPage === Math.ceil(filteredBudgetCalculator.length / itemsPerPage)}
+      style={{
+        margin: '0 4px',
+        padding: '6px 10px',
+        border: 'none',
+        borderRadius: '4px',
+        backgroundColor: '#f3f4f6',
+        cursor: 'pointer'
+      }}
+    >
+      Next
+    </button>
+  </div>
+</div>
           </div>
         </main>
       </section>

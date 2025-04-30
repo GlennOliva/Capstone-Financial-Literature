@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import "../css/landing.css";
 import {
   IoMenuOutline,
-  IoLogoGithub,
   IoLogoInstagram,
-  IoLogoYoutube,
   IoLogoFacebook,
   IoChevronUpOutline,
 } from "react-icons/io5";
@@ -183,33 +181,17 @@ const LandingPage: React.FC = () => {
             <p className="footer-text">Follow us on</p>
 
             <ul className="social-list">
+              
               <li>
                 <a
-                  href="https://github.com/codewithsadee"
-                  className="social-link"
-                  aria-label="GitHub"
-                >
-                  <IoLogoGithub />
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://instagram.com/codewithsadee"
+                  href="#"
                   className="social-link"
                   aria-label="Instagram"
                 >
                   <IoLogoInstagram />
                 </a>
               </li>
-              <li>
-                <a
-                  href="https://youtube.com/c/codewithsadee"
-                  className="social-link"
-                  aria-label="YouTube"
-                >
-                  <IoLogoYoutube />
-                </a>
-              </li>
+             
               <li>
                 <a href="#" className="social-link" aria-label="Facebook">
                   <IoLogoFacebook />

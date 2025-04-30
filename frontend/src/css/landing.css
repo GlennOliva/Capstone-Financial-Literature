@@ -167,9 +167,9 @@ body {
 }
 
 .btn-primary {
-  background: var(--bittersweet);
-  border-color: var(--bittersweet);
-  color: var(--white);
+  background: #AFDDFF;
+  border-color: #AFDDFF;
+  color: var(--black);
 }
 
 .btn-primary:is(:hover, :focus) { --bittersweet: hsl(2, 90%, 65%); }

@@ -10,6 +10,7 @@ const budgetTypeRoutes = require('./routes/BudgetTypeRoute.js');
 const CategoryRoutes = require('./routes/CategoryRoutes.js');
 const BudgetCalculatorRoutes = require('./routes/BudgetCalculatorRoutes.js');
 const GoalRoutes = require("./routes/GoalRoutes.js")
+const DashboardRoutes = require("./routes/DashboardRoutes.js")
 
 
 
@@ -25,6 +26,7 @@ app.use('/api/category', CategoryRoutes);
 app.use('/api/budget_calculator', BudgetCalculatorRoutes);
 app.use('/uploads', express.static('uploads'));
 app.use('/api/goals', GoalRoutes);
+app.use(DashboardRoutes);
 
 
 const PORT = process.env.PORT || 8081;
