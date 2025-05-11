@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../css/landing.css";
 import {
   IoMenuOutline,
@@ -16,7 +17,7 @@ import { Link } from "react-router-dom";
 
 const LandingPage: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-
+const navigate = useNavigate();
 
   return (
     <div id="top">
@@ -32,13 +33,14 @@ const LandingPage: React.FC = () => {
 
 
           <div className="navbar-wrapper">
-            <button
-              className="navbar-menu-btn"
-              onClick={() => setMenuOpen(!menuOpen)}
-              aria-label="Toggle menu"
-            >
-              <IoMenuOutline size={24} />
-            </button>
+      <button
+  className="navbar-menu-btn"
+  onClick={() => setMenuOpen(!menuOpen)}
+  aria-label="Toggle menu"
+>
+  <IoMenuOutline size={24} />
+</button>
+
 
             <nav className={`navbar ${menuOpen ? "open" : ""}`}>
               <ul className="navbar-list">
@@ -63,7 +65,10 @@ const LandingPage: React.FC = () => {
                 <p className="hero-text">
                   Capture and retrieve your lists across devices to help you stay organized at work, home, and on the go.
                 </p>
-                <button className="btn btn-primary">Get started</button>
+<button className="btn btn-primary" onClick={() => navigate("/login")}>
+  Get started
+</button>
+
               </div>
               <div className="hero-banner"></div>
             </div>
