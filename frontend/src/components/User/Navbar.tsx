@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/"); // Redirect to login page
+    navigate("/login"); // Redirect to login page
   };
 
   const toggleDropdown = (e: React.MouseEvent) => {
