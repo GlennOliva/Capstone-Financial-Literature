@@ -120,17 +120,20 @@ const Register = () => {
                 className={`bx ${showPassword ? "bx-hide" : "bx-show"} eye-icon`}
                 onClick={() => setShowPassword(!showPassword)}
               ></i>
-            </div>
 
-            <div className="input-group">
-              <i className="bx bx-file email-icon"></i>
-              <input
-                type="file"
-                className="input-field"
-                onChange={handleFileChange} // Corrected this to handle file changes
-                required
-              />
+              
             </div>
+<div className="input-group">
+  <i className="bx bx-image email-icon"></i>
+  <input
+    type="file"
+    className="input-field"
+    accept="image/*" // This ensures only images can be selected
+    onChange={handleFileChange}
+    required
+  />
+</div>
+
 
             <div className="input-group">
               <i className="bx bx-location-plus email-icon"></i>
