@@ -121,7 +121,7 @@ const Register = () => {
                 onClick={() => setShowPassword(!showPassword)}
               ></i>
 
-              
+
             </div>
 <div className="input-group">
   <i className="bx bx-image email-icon"></i>
@@ -129,6 +129,7 @@ const Register = () => {
     type="file"
     className="input-field"
     accept="image/*" // This ensures only images can be selected
+    placeholder="Upload profile picture"
     onChange={handleFileChange}
     required
   />
